@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="RandomChat - Anonymous Real-Time Chat Platform. Meet someone new, right now.">
+  <meta name="keywords" content="random chat, anonymous chat, video chat, audio chat, stranger chat">
+  <meta name="theme-color" content="#00D4C8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <!-- PWA Meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RandomChat">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="RandomChat - Meet Someone New"/>
+  <meta property="og:description" content="Anonymous real-time chat. No account required. Start chatting instantly."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://randomchat.app"/>
+
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="manifest" href="manifest.json">
+
+  <title>RandomChat — Meet Someone New</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: #0A0E1A;
+      font-family: -apple-system, BlinkMacSystemFont, 'DM Sans', sans-serif;
+      overflow: hidden;
+    }
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, #0A0E1A 0%, #0D1525 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+    #loading.hidden { opacity: 0; pointer-events: none; }
+    .logo-ring {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00D4C8, #0080FF);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 40px rgba(0, 212, 200, 0.4);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .logo-ring svg { width: 36px; height: 36px; fill: white; }
+    .app-name {
+      margin-top: 20px;
+      color: #00D4C8;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .loading-dots {
+      display: flex;
+      gap: 6px;
+      margin-top: 20px;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #00D4C8;
+      opacity: 0.3;
+      animation: dot-pulse 1.2s ease-in-out infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes dot-pulse { 0%, 100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-6px); } }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <div class="logo-ring">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+      </svg>
+    </div>
+    <div class="app-name">RandomChat</div>
+    <div class="loading-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('flutter-first-frame', () => {
+      const loading = document.getElementById('loading');
+      if (loading) {
+        loading.classList.add('hidden');
+        setTimeout(() => loading.remove(), 500);
+      }
+    });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

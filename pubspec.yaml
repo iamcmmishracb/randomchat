@@ -1,0 +1,49 @@
+name: randomchat
+description: RandomChat - Anonymous Real-Time Chat Platform
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: '>=3.13.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.1.0 
+
+  # Navigation
+  go_router: ^13.2.0
+
+  # State Management
+  provider: ^6.1.2
+
+  # Networking & Real-time
+  web_socket_channel: ^2.4.0
+
+  # UI Components
+  google_fonts: ^6.2.1
+  flutter_animate: ^4.5.0
+  cached_network_image: ^3.3.1
+
+  # Storage (web-safe)
+  shared_preferences: ^2.2.3
+
+  # Utils
+  uuid: ^4.4.0
+  intl: ^0.19.0
+  connectivity_plus: ^6.0.3
+
+  cupertino_icons: ^1.0.6
+
+  device_info_plus: ^10.0.0
+  geolocator: ^9.0.0
+  image_picker: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
