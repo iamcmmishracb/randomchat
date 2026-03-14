@@ -8,7 +8,6 @@ class UserModel {
   final String? email;
   final bool isBanned;
   final String? banReason;
-  final SubscriptionTier subscriptionTier;
   final DateTime createdAt;
   final DateTime? lastSeen;
 
@@ -20,7 +19,6 @@ class UserModel {
     this.email,
     this.isBanned = false,
     this.banReason,
-    this.subscriptionTier = SubscriptionTier.free,
     required this.createdAt,
     this.lastSeen,
   });
@@ -29,11 +27,11 @@ class UserModel {
     return UserModel(userId: userId, displayName: displayName, gender: gender, accountType: AccountType.anonymous, createdAt: DateTime.now());
   }
 
-  UserModel copyWith({String? displayName, Gender? gender, AccountType? accountType, String? email, bool? isBanned, SubscriptionTier? subscriptionTier}) {
-    return UserModel(userId: userId, displayName: displayName ?? this.displayName, gender: gender ?? this.gender, accountType: accountType ?? this.accountType, email: email ?? this.email, isBanned: isBanned ?? this.isBanned, banReason: banReason, subscriptionTier: subscriptionTier ?? this.subscriptionTier, createdAt: createdAt, lastSeen: lastSeen);
+  UserModel copyWith({String? displayName, Gender? gender, AccountType? accountType, String? email, bool? isBanned}) {
+    return UserModel(userId: userId, displayName: displayName ?? this.displayName, gender: gender ?? this.gender, accountType: accountType ?? this.accountType, email: email ?? this.email, isBanned: isBanned ?? this.isBanned, banReason: banReason, createdAt: createdAt, lastSeen: lastSeen);
   }
 
-  Map<String, dynamic> toJson() => {'user_id': userId, 'display_name': displayName, 'gender': gender.name, 'account_type': accountType.name, 'email': email, 'is_banned': isBanned, 'subscription_tier': subscriptionTier.name, 'created_at': createdAt.toIso8601String()};
+  Map<String, dynamic> toJson() => {'user_id': userId, 'display_name': displayName, 'gender': gender.name, 'account_type': accountType.name, 'email': email, 'is_banned': isBanned, 'created_at': createdAt.toIso8601String()};
 }
 
 class MessageModel {

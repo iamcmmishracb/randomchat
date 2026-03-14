@@ -22,11 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _soundNotifications = true;
   bool _pushNotifications = true;
   bool _autoConnect = false;
-  bool _autoCallWhenPartnerEnds = false;
-  bool _autoCallWhenIEnd = false;
-  bool _allowVideoCallsIn = true;
-  bool _allowAudioCallsIn = true;
-  bool _allowMediaIn = false;
+  bool _allowMediaIn = false; // kept for future use
 
   // Matching preferences
   final List<Gender> _getRequestFrom = [Gender.male, Gender.female, Gender.preferNotToSay];
@@ -211,6 +207,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void _showGrievanceDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: Theme.of(context).cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Row(children: [
+          Icon(Icons.support_agent_rounded, color: AppColors.primary, size: 22),
+          SizedBox(width: 8),
+          Text('Grievance Officer'),
+        ]),
+        content: const Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('As required by IT (Intermediary Guidelines) Rules 2021, Rule 3(1)(c):', style: TextStyle(fontWeight: FontWeight.w600)),
+          SizedBox(height: 10),
+          Text('📧  learneducamy@gmail.com'),
+          SizedBox(height: 4),
+          Text('🕐  Acknowledgement within 24 hours'),
+          SizedBox(height: 4),
+          Text('✅  Resolution within 15 days'),
+        ]),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
@@ -372,12 +395,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _section('Chat Behaviour', children: [
             _toggle(icon: Icons.bolt_rounded, title: 'Auto-connect when chat ends',
               subtitle: 'Automatically find a new chat partner', value: _autoConnect, onChanged: (v) => setState(() => _autoConnect = v)),
-            _divider(),
-            _toggle(icon: Icons.call_end_outlined, title: 'Auto-call when partner ends call',
-              subtitle: 'Restart call if your partner hangs up', value: _autoCallWhenPartnerEnds, onChanged: (v) => setState(() => _autoCallWhenPartnerEnds = v)),
-            _divider(),
-            _toggle(icon: Icons.replay_rounded, title: 'Auto-call when I end call',
-              subtitle: 'Restart call immediately after you hang up', value: _autoCallWhenIEnd, onChanged: (v) => setState(() => _autoCallWhenIEnd = v)),
+
           ]),
 
           // ── APPEARANCE ───────────────────────────────────────────
@@ -437,69 +455,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ]),
 
-          // ── PRIVACY & PERMISSIONS ─────────────────────────────────
-          _section('Privacy & Permissions', children: [
-            _tile(
-              leading: const Icon(Icons.videocam_outlined, color: AppColors.primary, size: 20),
-              title: 'Allow incoming video calls',
-              subtitle: 'Video chat is for users 18+ only',
-              trailing: Switch(
-                value: _allowVideoCallsIn,
-                activeColor: AppColors.primary,
-                onChanged: (v) {
-                  if (v) {
-                    _showAgeConfirm(
-                      message: 'By enabling this, you confirm you are 18 years of age or older and consent to receiving video calls from chat partners.',
-                      onConfirmed: () => setState(() => _allowVideoCallsIn = true),
-                    );
-                  } else {
-                    setState(() => _allowVideoCallsIn = false);
-                  }
-                },
-              ),
-            ),
-            _divider(),
-            _tile(
-              leading: const Icon(Icons.mic_outlined, color: AppColors.primary, size: 20),
-              title: 'Allow incoming audio calls',
-              subtitle: 'Audio chat is for users 18+ only',
-              trailing: Switch(
-                value: _allowAudioCallsIn,
-                activeColor: AppColors.primary,
-                onChanged: (v) {
-                  if (v) {
-                    _showAgeConfirm(
-                      message: 'By enabling this, you confirm you are 18 years of age or older and consent to receiving audio calls from chat partners.',
-                      onConfirmed: () => setState(() => _allowAudioCallsIn = true),
-                    );
-                  } else {
-                    setState(() => _allowAudioCallsIn = false);
-                  }
-                },
-              ),
-            ),
-            _divider(),
-            _tile(
-              leading: const Icon(Icons.perm_media_outlined, color: AppColors.primary, size: 20),
-              title: 'Allow incoming images & videos',
-              subtitle: 'By enabling, you confirm you are 18+ and consent to receive media',
-              trailing: Switch(
-                value: _allowMediaIn,
-                activeColor: AppColors.primary,
-                onChanged: (v) {
-                  if (v) {
-                    _showAgeConfirm(
-                      message: 'By enabling this, you confirm you are 18 years of age or older and consent to receiving media files from chat partners.',
-                      onConfirmed: () => setState(() => _allowMediaIn = true),
-                    );
-                  } else {
-                    setState(() => _allowMediaIn = false);
-                  }
-                },
-              ),
-            ),
-          ]),
-
           // ── INFO & LEGAL ─────────────────────────────────────────
           _section('Info & Legal', children: [
             _tile(leading: const Icon(Icons.info_outline_rounded, size: 20), title: 'About Us', trailing: const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted, size: 18), onTap: () => context.push(AppRoutes.aboutUs)),
@@ -515,8 +470,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _tile(leading: const Icon(Icons.article_outlined, size: 20), title: 'Blog', trailing: const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted, size: 18), onTap: () => context.push(AppRoutes.blog)),
           ]),
 
+          // ── GRIEVANCE & SUPPORT ──────────────────────────────────
+          _section('Grievance & Support', children: [
+            _tile(
+              leading: const Icon(Icons.support_agent_rounded, color: AppColors.primary, size: 20),
+              title: 'Grievance Officer',
+              subtitle: 'IT Rules 2021 — complaints resolved within 15 days',
+              trailing: const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted, size: 18),
+              onTap: () => _showGrievanceDialog(context),
+            ),
+          ]),
+
+
           const SizedBox(height: 32),
-          Center(child: Text('RandomChat v1.0.0', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted))),
+          Center(child: Text('Strangchatomy v1.0.0', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textMuted))),
           const SizedBox(height: 24),
         ],
       ),

@@ -1,6 +1,6 @@
 class AppConstants {
   // App Info
-  static const String appName = 'RandomChat';
+  static const String appName = 'Strangchatomy';
   static const String appTagline = 'Meet someone new, right now.';
   static const String appVersion = '1.0.0';
 
@@ -23,7 +23,6 @@ class AppConstants {
   static const String keyIsLoggedIn = 'is_logged_in';
   static const String keyAuthToken = 'auth_token';
   static const String keyRefreshToken = 'refresh_token';
-  static const String keySubscriptionTier = 'subscription_tier';
   static const String keyTheme = 'theme';
 
   // ===== LOCAL DEVELOPMENT URLs =====
@@ -32,8 +31,8 @@ class AppConstants {
   static const String wsUrl = 'ws://localhost:3000';
 
   // ===== PRODUCTION URLs (uncomment when deploying) =====
-  // static const String baseUrl = 'https://api.randomchat.app';
-  // static const String wsUrl = 'wss://ws.randomchat.app';
+  // static const String baseUrl = 'https://api.strangchatomy.app';
+  // static const String wsUrl = 'wss://ws.strangchatomy.app';
 
   // ── SECURITY: App Key ───────────────────────────────────────────────────
   // Must match APP_SECRET in your backend .env file.
@@ -58,7 +57,6 @@ enum Gender { male, female, preferNotToSay }
 
 enum AccountType { anonymous, registered }
 
-enum SubscriptionTier { free, premium }
 
 enum SessionStatus { active, ended, flagged }
 

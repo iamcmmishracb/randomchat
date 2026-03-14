@@ -60,11 +60,14 @@ class ApiService {
   }
 
   /// 📱 Create Anonymous Session
-  /// NOTE: IMEI removed — collecting IMEI violates Google Play policy.
+  /// Requires explicit consent and age confirmation (DPDP Act 2023, Sec. 6 & 9).
   Future<DeviceSession> createAnonymousSession({
     required String displayName,
     required String gender,
     required DeviceInfo deviceInfo,
+    required bool consentGiven,
+    required bool ageConfirmed,
+    required DateTime consentTimestamp,
   }) async {
     try {
       _log('🎯 Creating anonymous session for: $displayName');
@@ -77,14 +80,14 @@ class ApiService {
           'gender':             gender,
           'deviceModel':        deviceInfo.deviceModel,
           'deviceManufacturer': deviceInfo.deviceManufacturer,
-          // ← imei removed (Play Store violation)
-          'location': deviceInfo.latitude != null
-              ? {
-                  'latitude':  deviceInfo.latitude,
-                  'longitude': deviceInfo.longitude,
-                  'accuracy':  deviceInfo.accuracy,
-                }
-              : null,
+          // Consent fields — required by backend (DPDP Act 2023)
+          'consentGiven':       consentGiven,
+          'ageConfirmed':       ageConfirmed,
+          'consentTimestamp':   consentTimestamp.toIso8601String(),
+          // Location — sent only when the user grants permission (optional)
+          if (deviceInfo.latitude != null)  'latitude':  deviceInfo.latitude,
+          if (deviceInfo.longitude != null) 'longitude': deviceInfo.longitude,
+          if (deviceInfo.accuracy != null)  'accuracy':  deviceInfo.accuracy,
         },
       );
 
@@ -120,24 +123,91 @@ class ApiService {
     }
   }
 
-  /// 🏁 End Anonymous Session
-  /// userId is now required so the backend can mark the user offline.
-  Future<void> endSession(String sessionId, String userId) async {
+
+  /// 🏁 End Session with Stats (POST /api/sessions/anonymous/end)
+  /// Sends session stats so the admin panel can display accurate
+  /// message counts, durations, bot-session flags, and final status.
+  Future<void> endSessionWithStats({
+    required String sessionId,
+    required String userId,
+    required int messageCount,
+    required int durationSeconds,
+    required bool isBotSession,
+    required String status, // 'ended' | 'flagged'
+  }) async {
     try {
-      _log('🏁 Ending session: $sessionId');
+      _log('🏁 Ending session with stats: $sessionId  msgs=$messageCount  dur=${durationSeconds}s  bot=$isBotSession');
       final response = await _post(
         AppConfig.endSessionUrl,
         body: {
-          'sessionId': sessionId,
-          'userId':    userId,    // ← NEW: required by backend
+          'sessionId':       sessionId,
+          'userId':          userId,
+          'messageCount':    messageCount,
+          'durationSeconds': durationSeconds,
+          'isBotSession':    isBotSession,
+          'status':          status,
         },
       );
       if (response is Map && response['success'] == true) {
         clearSessionToken();
-        _log('✅ Session ended');
+        _log('✅ Session ended with stats');
       }
     } catch (e) {
-      _log('⚠️ Error ending session: $e');
+      _log('⚠️ Error ending session with stats: $e');
+    }
+  }
+
+  /// 🚨 Report a user (POST /api/sessions/report)
+  /// Submits a report AND auto-flags the session on the backend so evidence
+  /// cannot be auto-deleted before admin review (Gap 4 fix).
+  Future<void> reportUser({
+    required String reportedUserId,
+    required String sessionId,
+    required String reason,
+    String? description,
+  }) async {
+    try {
+      _log('🚨 Reporting user: $reportedUserId, reason: $reason');
+      final url = '${AppConfig.apiUrl}/api/sessions/report';
+      final response = await _client
+          .post(
+            Uri.parse(url),
+            headers: _headers,
+            body: jsonEncode({
+              'reportedUserId': reportedUserId,
+              'sessionId':      sessionId,
+              'reason':         reason,
+              if (description != null && description.isNotEmpty)
+                'description': description,
+            }),
+          )
+          .timeout(const Duration(seconds: 10));
+      _handleResponse(response);
+      _log('✅ Report submitted');
+    } on TimeoutException {
+      throw ApiException('Request timeout');
+    } catch (e) {
+      throw ApiException('Failed to submit report: $e');
+    }
+  }
+
+  /// 🗑️ Delete account — Right to Erasure (DPDP Act 2023, Sec. 13)
+  Future<void> deleteAccount() async {
+    try {
+      _log('🗑️ Deleting account...');
+      final url = '${AppConfig.apiUrl}/api/sessions/account';
+      final response = await _client
+          .delete(Uri.parse(url), headers: _headers)
+          .timeout(const Duration(seconds: 15));
+      final result = _handleResponse(response);
+      if (result is Map && result['success'] == true) {
+        clearSessionToken();
+        _log('✅ Account deleted');
+      } else {
+        throw ApiException('Failed to delete account');
+      }
+    } catch (e) {
+      throw ApiException('Delete account failed: $e');
     }
   }
 

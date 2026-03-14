@@ -4,8 +4,8 @@ import 'core/theme/app_theme.dart';
 import 'core/routes/app_router.dart';
 import 'core/providers/theme_provider.dart';
 
-class RandomChatApp extends StatelessWidget {
-  const RandomChatApp({super.key});
+class StrangchatomyApp extends StatelessWidget {
+  const StrangchatomyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class RandomChatApp extends StatelessWidget {
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(
         builder: (_, themeProvider, __) => MaterialApp.router(
-          title: 'RandomChat',
+          title: 'Strangchatomy',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,

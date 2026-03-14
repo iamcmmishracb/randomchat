@@ -42,6 +42,10 @@ class _ChatInputBarState extends State<ChatInputBar> {
     widget.onSend(text);
     _controller.clear();
     widget.sessionService.emitTyping(false);
+    // Re-request focus so user can type next message immediately
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _focusNode.requestFocus();
+    });
   }
 
   // ── Enter key on PC sends message ──────────────────────────

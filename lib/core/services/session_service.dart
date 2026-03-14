@@ -25,6 +25,10 @@ class SessionService {
   bool _chatEnabled         = true;
   int  _botConversationStep = 0;
 
+  // ── Session stat tracking (Gaps 2, 3, 4) ─────────────────────────────
+  DateTime? _sessionStartTime;
+  int       _sentMessageCount = 0;   // outgoing messages only (server counts both sides)
+
   Completer<ChatSessionModel>? _matchCompleter;
   Completer<void>? _authCompleter;
 
@@ -56,7 +60,9 @@ class SessionService {
   /// 🚀 Main entry point - Create session and start matching
   Future<ChatSessionModel> startMatching() async {
     _print('🚀 Starting device-based matching...');
-    _chatEnabled = true;
+    _chatEnabled      = true;
+    _sessionStartTime = null;
+    _sentMessageCount = 0;
 
     try {
       // Step 1: Collect Device Info
@@ -70,6 +76,9 @@ class SessionService {
         displayName: _currentUser?.displayName ?? 'Anonymous',
         gender: (_currentUser?.gender.displayName ?? 'other').toLowerCase(),
         deviceInfo: deviceInfo,
+        consentGiven: true,       // User accepted terms on HomeScreen before calling startMatching()
+        ageConfirmed: true,       // User confirmed 18+ on HomeScreen
+        consentTimestamp: DateTime.now(),
       );
       _print('✅ Session created: ${_deviceSession!.sessionId}  userId: ${_deviceSession!.userId}');
 
@@ -168,7 +177,9 @@ class SessionService {
       partnerGender: _parseGender(data['partnerGender']),
     );
     _messages.clear();
-    _chatEnabled = true;
+    _chatEnabled      = true;
+    _sessionStartTime = DateTime.now();
+    _sentMessageCount = 0;
     _sessionController.add(_currentSession);
     _print('🎉 Session started: ${_currentSession!.sessionId}');
   }
@@ -205,6 +216,7 @@ class SessionService {
     );
     _messages.add(message);
     _messageController.add(message);
+    _sentMessageCount++; // track for stats (Gap 2)
 
     Future.delayed(const Duration(milliseconds: 600), () {
       final idx = _messages.indexWhere((m) => m.messageId == message.messageId);
@@ -230,6 +242,36 @@ class SessionService {
     }
   }
 
+  /// 🚩 Flag a specific message (Gap 5)
+  /// Marks the message locally and notifies the server so the backend
+  /// can store isFlagged=true on that message document.
+  void flagMessage(String messageId) {
+    final idx = _messages.indexWhere((m) => m.messageId == messageId);
+    if (idx == -1) return;
+    final flagged = MessageModel(
+      messageId:   _messages[idx].messageId,
+      sessionId:   _messages[idx].sessionId,
+      senderId:    _messages[idx].senderId,
+      content:     _messages[idx].content,
+      sentAt:      _messages[idx].sentAt,
+      deliveredAt: _messages[idx].deliveredAt,
+      readAt:      _messages[idx].readAt,
+      status:      _messages[idx].status,
+      isMe:        _messages[idx].isMe,
+      isFlagged:   true,
+    );
+    _messages[idx] = flagged;
+    _messageController.add(flagged);
+    // Notify server so the message document is marked isFlagged (Gap 5)
+    if (_webSocketService.isConnected && !isBotSession) {
+      _webSocketService.emit('flag_message', {
+        'messageId': messageId,
+        'sessionId': _currentSession?.sessionId,
+      });
+    }
+    _print('🚩 Message flagged: $messageId');
+  }
+
   // ── Demo/bot fallback ──────────────────────────────────────────────────
 
   ChatSessionModel _createDemoSession() {
@@ -253,6 +295,8 @@ class SessionService {
     );
     _messages.clear();
     _sessionController.add(_currentSession);
+    _sessionStartTime = DateTime.now();
+    _sentMessageCount = 0;
     _print('🤖 Demo session started with $partnerName');
     _scheduleNextIntroMessage();
     return _currentSession!;
@@ -322,21 +366,42 @@ class SessionService {
   // ── Lifecycle ──────────────────────────────────────────────────────────
 
   Future<void> disconnect() async {
-    _botActive    = false;
-    _chatEnabled  = false;
+    // ── Capture ALL stats BEFORE mutating any state ────────────────────────
+    // Bug 1 fix: use the MATCH session ID (match-XXXX), not the login session
+    // ID (_deviceSession.sessionId). The backend /end route updates the match
+    // session document, not the login session document.
+    final matchSessionId  = _currentSession?.sessionId;
+    final durationSeconds = _sessionStartTime != null
+        ? DateTime.now().difference(_sessionStartTime!).inSeconds
+        : 0;
+    final totalMessages   = _messages.length; // sent + received
+    // Bug 2 fix: read isBotSession directly before _botActive is cleared.
+    // Previous code set _botActive=false first, making the ternary always true.
+    final wasBotSession   = _currentSession?.isBotSession ?? false;
+    final hasFlagged      = _messages.any((m) => m.isFlagged);
+    final sessionStatus   = hasFlagged ? 'flagged' : 'ended';
+
+    _botActive      = false;
+    _chatEnabled    = false;
     _currentSession = null;
     _sessionController.add(null);
 
-    // Pass userId so backend marks user offline
-    if (_deviceSession != null) {
-      await _apiService.endSession(
-        _deviceSession!.sessionId,
-        _deviceSession!.userId,   // ← NEW: required by backend
+    // Send stats only when we have a real match session ID to update
+    if (_deviceSession != null && matchSessionId != null) {
+      await _apiService.endSessionWithStats(
+        sessionId:       matchSessionId,       // ← match session, not login session
+        userId:          _deviceSession!.userId,
+        messageCount:    totalMessages,
+        durationSeconds: durationSeconds,
+        isBotSession:    wasBotSession,
+        status:          sessionStatus,
       );
     }
 
     _webSocketService.disconnect();
-    _print('🔌 Disconnected');
+    _sessionStartTime = null;
+    _sentMessageCount = 0;
+    _print('🔌 Disconnected  msgs=$totalMessages  dur=${durationSeconds}s  bot=$wasBotSession');
   }
 
   Future<void> startNewChat() async {

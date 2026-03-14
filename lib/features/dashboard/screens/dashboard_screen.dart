@@ -92,7 +92,7 @@ class DashboardScreen extends StatelessWidget {
                 const Icon(Icons.lock_outline_rounded, color: AppColors.primary, size: 16),
                 const SizedBox(width: 10),
                 Expanded(child: Text(
-                  'RandomChat is fully anonymous. Chat history is never saved — once you disconnect, the conversation is gone forever.',
+                  'Strangchatomy is fully anonymous. Chat history is never saved — once you disconnect, the conversation is gone forever.',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(height: 1.5),
                 )),
               ]),

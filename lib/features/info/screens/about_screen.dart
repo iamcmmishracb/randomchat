@@ -8,14 +8,14 @@ class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
   @override
   Widget build(BuildContext context) => _InfoScaffold(title: 'About Us', child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    _HeroBlock(icon: Icons.chat_bubble_rounded, title: 'RandomChat', subtitle: 'Meet someone new, right now.'),
-    _Section('Who We Are', 'RandomChat is an anonymous real-time chat platform built for people who value spontaneous, genuine human connection. We believe the best conversations happen without the pressure of profiles, followers, or social expectations.\n\nFounded in 2026, our team is passionate about creating a space where anyone — anywhere in the world — can have a real conversation with a real person.'),
+    _HeroBlock(icon: Icons.chat_bubble_rounded, title: 'Strangchatomy', subtitle: 'Meet someone new, right now.'),
+    _Section('Who We Are', 'Strangchatomy is an anonymous real-time chat platform built for people who value spontaneous, genuine human connection. We believe the best conversations happen without the pressure of profiles, followers, or social expectations.\n\nFounded in 2026, our team is passionate about creating a space where anyone — anywhere in the world — can have a real conversation with a real person.'),
     _Section('Our Mission', 'Our mission is simple: bring people together in a safe, private, and respectful environment. We are committed to building technology that fosters authentic connection while keeping user safety and privacy at the forefront of everything we do.'),
-    _Section('What Makes Us Different', '• Zero chat history — your conversations are private by design\n• Real-time moderation powered by AI + human reviewers\n• Available on Web and Android\n• No account required to start chatting'),
-    _Section('Our Values', '🔒  Privacy First — We never store your chats.\n🤝  Respect — Harassment is not tolerated.\n🌍  Inclusivity — Everyone is welcome.\n⚡  Simplicity — No profiles, no followers, just talk.'),
-    _Section('Contact Us', 'Have feedback or questions? We\'d love to hear from you.\n\n📧  support@randomchat.app\n🌐  www.randomchat.app'),
+    _Section('What Makes Us Different', '• Zero chat history — your conversations are private by design\n• Real-time moderation powered by AI + human reviewers\n• Available on Web and Android\n• No account required to start chatting\n• Completely free — no subscriptions, no hidden fees'),
+    _Section('Our Values', '🔒  Privacy First — We never store your chats.\n🤝  Respect — Harassment is not tolerated.\n🌍  Inclusivity — Everyone is welcome.\n⚡  Simplicity — No profiles, no followers, just talk.\n🆓  Free Forever — No paywalls, ever.'),
+    _Section('Contact Us', 'Have feedback or questions? We\'d love to hear from you.\n\n📧  learneducamy@gmail.com'),
     const SizedBox(height: 8),
-    Center(child: Text('RandomChat v1.0.0 · Built with ❤️', style: TextStyle(color: AppColors.textMuted, fontSize: 12))),
+    Center(child: Text('Strangchatomy v1.0.0 · Built with ❤️', style: TextStyle(color: AppColors.textMuted, fontSize: 12))),
   ]));
 }
 
@@ -24,16 +24,17 @@ class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
   @override
   Widget build(BuildContext context) => _InfoScaffold(title: 'Privacy Policy', child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    _MetaInfo('Last Updated: March 2026 · Effective: March 2026'),
-    _Section('1. Introduction', 'RandomChat ("we", "our", "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard information when you use our platform.'),
-    _Section('2. Information We Collect', 'Anonymous Users:\n• A randomly generated session token (stored locally on your device)\n• Your chosen display name (nickname only)\n• Your selected gender preference\n• Hashed IP address (for abuse prevention only, deleted after 30 days)'),
-    _Section('3. What We Do NOT Collect', '• Real name or identity\n• Phone number or location data\n• Chat message content — messages are ephemeral and never stored\n• Device contacts or media files'),
-    _Section('4. How We Use Your Information', '• To connect you with a chat partner\n• To prevent abuse and banned users from rejoining\n• To improve our matching algorithm and platform quality'),
-    _Section('5. Data Retention', '• Session tokens: 24 hours\n• Hashed IP addresses: 30 days\n• Chat messages: Never stored'),
-    _Section('6. Data Security', 'All data in transit is encrypted with TLS 1.3. All stored data is encrypted with AES-256. We conduct regular security audits and penetration testing.'),
-    _Section('7. Your Rights (GDPR/CCPA)', '• Right to Access — Request a copy of your data\n• Right to Erasure — Request deletion of your account\n• Right to Portability — Export your data\n\nEmail: privacy@randomchat.app'),
-    _Section('8. Children\'s Safety', 'RandomChat is strictly for users 18 years of age and older. Accounts belonging to minors are immediately removed.'),
-    _Section('9. Contact', 'Privacy inquiries: privacy@randomchat.app\nData Protection Officer: dpo@randomchat.app'),
+    _MetaInfo('Last Updated: March 2026 · Governed by: DPDP Act 2023 & IT Act 2000 (India)'),
+    _Section('1. Introduction', 'Strangchatomy ("we", "our", "us") is committed to protecting your privacy under the Digital Personal Data Protection Act, 2023 (DPDP Act) and the Information Technology Act, 2000. This Privacy Policy explains what data we collect, why, and your rights over it.'),
+    _Section('2. Data We Collect and Why', 'When you start a chat session we collect:\n\n• Display name — to identify you in chat\n• Gender preference — for partner matching\n• Device identifier — to prevent banned users from rejoining\n• Device model & manufacturer — for compatibility and abuse prevention\n• IP address (AES-256 encrypted immediately on receipt) — for abuse prevention and IT Act 2000 compliance\n• Consent record with timestamp — required by DPDP Act 2023, Sec. 6\n\nWe do NOT collect your real name, phone number, email address, contacts, or social media profiles.'),
+    _Section('3. Lawful Basis for Processing', '• Consent (DPDP Act 2023, Sec. 6) — You give explicit, informed, revocable consent before any data is collected.\n• Legitimate use — Fraud prevention and safety.\n• Legal obligation — Compliance with lawful orders under IT Act 2000, Sec. 69.'),
+    _Section('4. Data Retention', '• Session records: deleted after 90 days\n• Encrypted IP addresses: deleted after 90 days\n• Chat messages: AES-256-CBC encrypted, auto-deleted after 90 days\n• Accounts under legal hold: retained until hold is lifted\n\nYou may request immediate deletion at any time (see Section 6).'),
+    _Section('5. Data Security', 'All IP addresses are encrypted with AES-256 immediately on receipt and are never stored in plaintext. Data in transit uses TLS 1.3. Access to personal data is restricted to authorised personnel only.'),
+    _Section('6. Your Rights (DPDP Act 2023)', 'Under the DPDP Act 2023, you have the right to:\n\n• Access — Request confirmation of what data we hold.\n• Correction — Request correction of inaccurate data.\n• Erasure — Delete your account and all data from contacting learneducamy@gmail.com. We process your request unless a legal hold applies.\n• Withdrawal of Consent — Withdraw at any time; this does not affect prior lawful processing.\n• Grievance Redressal — Raise a complaint with our Grievance Officer (Section 8).\n\nTo exercise any right: learneducamy@gmail.com'),
+    _Section('7. Law Enforcement Disclosure', 'We may disclose data in response to lawful orders under IT Act 2000 (Sec. 69), CRPC Sec. 91, or MLAT requests. All such requests are logged and reviewed. We notify you unless prohibited by law.'),
+    _Section('8. Grievance Officer (IT Rules 2021, Rule 3(1)(c))', 'In accordance with Rule 3(1)(c) of the IT (Intermediary Guidelines) Rules, 2021:\n\n📧  learneducamy@gmail.com\n🕐  Complaints acknowledged within 24 hours, resolved within 15 days.'),
+    _Section('9. Children\'s Data (DPDP Act 2023, Sec. 9)', 'Strangchatomy is strictly for users 18+. Users must confirm their age before using the platform. We do not knowingly collect data from minors. Accounts found to belong to minors are immediately deleted.'),
+    _Section('10. Contact', 'Privacy: learneducamy@gmail.com\nData Protection Officer: learneducamy@gmail.com\nGrievance Officer: learneducamy@gmail.com'),
   ]));
 }
 
@@ -42,13 +43,16 @@ class TermsOfUseScreen extends StatelessWidget {
   const TermsOfUseScreen({super.key});
   @override
   Widget build(BuildContext context) => _InfoScaffold(title: 'Terms of Use', child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    _MetaInfo('Last Updated: March 2026'),
-    _Section('1. Acceptance', 'By accessing or using RandomChat, you confirm you are at least 18 years of age and agree to be bound by these Terms.'),
-    _Section('2. Eligibility', '• You must be 18 years or older.\n• You must not be a previously banned user attempting to re-access the platform.'),
-    _Section('3. Prohibited Conduct', 'You agree NOT to:\n• Share sexual, violent, or illegal content\n• Harass, threaten, or abuse other users\n• Share personal information of others without consent\n• Use bots, scripts, or automated tools\n• Share CSAM or any content involving minors'),
-    _Section('4. Moderation & Bans', 'We reserve the right to ban any user at any time for violations. Severe violations result in immediate permanent bans.'),
-    _Section('5. Disclaimer', 'RandomChat is provided "as is" without warranty of any kind. We do not guarantee match availability or the behaviour of other users.'),
-    _Section('6. Contact', 'Legal: legal@randomchat.app'),
+    _MetaInfo('Last Updated: March 2026 · Governed by laws of India'),
+    _Section('1. Acceptance', 'By accessing or using Strangchatomy, you confirm that you are at least 18 years of age and agree to be bound by these Terms of Use, our Privacy Policy, and all applicable Indian laws including the IT Act 2000 and DPDP Act 2023.'),
+    _Section('2. Age Requirement & Eligibility', '• You must be 18 years of age or older. By using this platform you confirm this under DPDP Act 2023, Sec. 9.\n• You must not be a previously banned user attempting to re-access the platform.\n• You must not use this platform on behalf of a minor.'),
+    _Section('3. Prohibited Conduct', 'You agree NOT to:\n• Share sexual, violent, or illegal content\n• Harass, threaten, or abuse other users\n• Share personal information of others without consent\n• Use bots, scripts, or automated tools\n• Share CSAM or any content involving minors\n• Attempt to de-anonymise other users'),
+    _Section('4. Consent & Data', 'By using Strangchatomy you consent to the collection and processing of limited personal data as described in our Privacy Policy. You may withdraw consent at any time by contacting us at learneducamy@gmail.com.'),
+    _Section('5. Moderation & Bans', 'We reserve the right to ban any user at any time for violations. Severe violations result in immediate permanent bans. Repeat offenders may be reported to law enforcement under IT Act 2000.'),
+    _Section('6. Grievance Redressal (IT Rules 2021)', 'If you believe your rights have been violated or wish to report content, contact our Grievance Officer at learneducamy@gmail.com. Complaints are acknowledged within 24 hours and resolved within 15 days.'),
+    _Section('7. Disclaimer', 'Strangchatomy is provided "as is" without warranty of any kind. We do not guarantee match availability or the behaviour of other users.'),
+    _Section('8. Governing Law', 'These Terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of courts in India.'),
+    _Section('7. Contact', 'Legal & Grievance Officer: learneducamy@gmail.com'),
   ]));
 }
 
@@ -58,10 +62,10 @@ class TermsAndConditionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _InfoScaffold(title: 'Terms & Conditions', child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     _MetaInfo('Last Updated: March 2026'),
-    _Section('1. Platform Description', 'RandomChat provides a real-time anonymous chat service connecting users for text-based communication. The service is provided free with optional premium features.'),
-    _Section('2. Premium Subscription', 'Premium features are available via monthly or annual subscription.\n• Monthly: \$4.99/month\n• Annual: \$39.99/year\n\nSubscriptions auto-renew unless cancelled 24 hours before the renewal date.'),
+    _Section('1. Platform Description', 'Strangchatomy provides a real-time anonymous chat service connecting users for text-based communication. The service is completely free — no subscriptions, no premium tiers, no hidden fees.'),
+    _Section('2. Free Service', 'Strangchatomy is and will remain entirely free. All features are available to all users at no cost:\n• Unlimited text messaging\n• Instant random matching\n• AI partner when no real user is available'),
     _Section('3. Free Tier Features', '• Unlimited text messaging\n• Standard queue priority'),
-    _Section('4. Intellectual Property', 'All platform content, design, trademarks, and technology are owned by RandomChat. You may not reproduce or create derivative works without written permission.'),
+    _Section('4. Intellectual Property', 'All platform content, design, trademarks, and technology are owned by Strangchatomy. You may not reproduce or create derivative works without written permission.'),
     _Section('5. Service Availability', 'We aim for 99.9% uptime but do not guarantee uninterrupted service.'),
     _Section('6. Termination', 'We may terminate access immediately for conduct that violates these terms or harms other users.'),
   ]));
@@ -71,14 +75,15 @@ class TermsAndConditionsScreen extends StatelessWidget {
 class FAQScreen extends StatelessWidget {
   const FAQScreen({super.key});
   static const _faqs = [
-    ('Is RandomChat really anonymous?', 'Yes. You do not need to create an account. You only provide a nickname. We do not collect your real name, phone number, or location. Your chat history is never stored.'),
+    ('Is Strangchatomy really anonymous?', 'Yes. You do not need to create an account. You only provide a nickname. We do not collect your real name, phone number, or email. Messages are encrypted and auto-deleted after 90 days.'),
+    ('What is the Device ID and is it real?', 'Yes — it is a real, hardware-assigned identifier. On Android we use the Android Device ID (assigned by the OS, no special permission needed). On iOS we use the identifierForVendor. On web/desktop we generate a session-based fallback ID. We use this solely to prevent banned users from rejoining — it is never shared with third parties.'),
     ('How does matching work?', 'When you tap "Start Chat", our system finds another available user. If no real user is available within a few seconds, you\'ll be connected to an AI partner so you\'re never left waiting.'),
-    ('Can I choose who I talk to?', 'No — that\'s the whole point! RandomChat is about spontaneous, unexpected connections. Every match is completely random.'),
-    ('Is my chat history saved?', 'No. Once a chat ends, it is permanently deleted. We do not store any message content. This is a core privacy feature of RandomChat.'),
+    ('Can I choose who I talk to?', 'No — that\'s the whole point! Strangchatomy is about spontaneous, unexpected connections. Every match is completely random.'),
+    ('Is my chat history saved?', 'No. Once a chat ends, it is permanently deleted. Chat messages are encrypted and auto-deleted after 90 days. This is a core privacy feature of Strangchatomy.'),
     ('What happens if I get disconnected?', 'If either party disconnects, the chat session ends immediately. You can start a new chat from the home screen at any time.'),
     ('How do I report someone?', 'Tap the menu (⋮) in the top-right corner of any chat and select "Report User". Choose a reason and add details. All reports are reviewed within 24 hours.'),
-    ('Is RandomChat safe for minors?', 'No. RandomChat is strictly for users 18+. We have content moderation systems in place, but the platform is not appropriate for minors under any circumstances.'),
-    ('How do I delete my account?', 'You can delete your account from Settings. All data is permanently removed within 30 days.'),
+    ('Is Strangchatomy safe for minors?', 'No. Strangchatomy is strictly for users 18+. We have content moderation systems in place, but the platform is not appropriate for minors under any circumstances.'),
+    ('How do I delete my account?', 'Email us at learneducamy@gmail.com and we will delete your data within 30 days.'),
   ];
   @override
   Widget build(BuildContext context) => _InfoScaffold(title: 'FAQs', child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -97,7 +102,7 @@ class BlogScreen extends StatelessWidget {
       title: 'Why Anonymous Chat is the Future of Authentic Connection',
       date: 'March 2026', readTime: '5 min read',
       excerpt: 'In a world saturated with curated profiles and performative social media, there\'s a growing hunger for something real.',
-      body: 'In a world saturated with curated profiles and performative social media, there\'s a growing hunger for something real. RandomChat taps into that desire by stripping away the social armour we all wear online.\n\nWhen you know someone can see your profile picture, follower count, and post history, you perform. You self-censor. You say what you think sounds good rather than what you actually think.\n\nAnonymity removes that pressure. Studies consistently show that people share more honestly, engage more deeply, and feel more genuine connection when their identity is protected. The therapist\'s couch works for the same reason: safety comes from privacy.\n\nRandomChat is built on this insight. No profiles. No followers. No permanent record. Just two humans, talking.',
+      body: 'In a world saturated with curated profiles and performative social media, there\'s a growing hunger for something real. Strangchatomy taps into that desire by stripping away the social armour we all wear online.\n\nWhen you know someone can see your profile picture, follower count, and post history, you perform. You self-censor. You say what you think sounds good rather than what you actually think.\n\nAnonymity removes that pressure. Studies consistently show that people share more honestly, engage more deeply, and feel more genuine connection when their identity is protected. The therapist\'s couch works for the same reason: safety comes from privacy.\n\nStrangchatomy is built on this insight. No profiles. No followers. No permanent record. Just two humans, talking.',
     ),
     _BlogPost(
       id: '2',

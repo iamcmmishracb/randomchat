@@ -84,23 +84,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 opacity: _fadeAnimation,
                 child: Center(
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: isWide ? size.width * 0.3 : 24, vertical: 32),
+                    padding: EdgeInsets.symmetric(horizontal: isWide ? size.width * 0.3 : 24, vertical: 16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ScaleTransition(scale: _pulseAnimation, child: _buildLogo()),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Text(
                           AppConstants.appName,
                           style: Theme.of(context).textTheme.displayMedium?.copyWith(
                             foreground: Paint()..shader = const LinearGradient(colors: [AppColors.primary, AppColors.primaryLight]).createShader(const Rect.fromLTWH(0, 0, 200, 60)),
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 4),
                         Text(AppConstants.appTagline, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary)),
+                        const SizedBox(height: 8),
                         // Live count badge
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                           decoration: BoxDecoration(
                             color: AppColors.success.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(20),
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ]),
                         ),
 
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 14),
 
                         // Form card
                         Container(
@@ -141,9 +142,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     return null;
                                   },
                                 ),
-                                const SizedBox(height: 20),
+                                const SizedBox(height: 16),
                                 Text('I am a...', style: Theme.of(context).textTheme.titleMedium),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 8),
                                 Row(children: [
                                   _genderChip(Gender.male, '👨', 'Male', AppColors.male),
                                   const SizedBox(width: 8),
@@ -224,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ),
                         ),
 
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 10),
                         TextButton(onPressed: () => context.go(AppRoutes.dashboard), child: const Text('Profile & Settings')),
                       ],
                     ),

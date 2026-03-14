@@ -57,7 +57,7 @@ class _PostChatScreenState extends State<PostChatScreen> with SingleTickerProvid
                 Text('Chat Ended', style: Theme.of(context).textTheme.headlineLarge),
                 const SizedBox(height: 10),
                 Text(
-                  'This conversation has been permanently deleted.\nRandomChat never stores your chats.',
+                  'This conversation has been permanently deleted.\nStrangchatomy never stores your chats.',
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
